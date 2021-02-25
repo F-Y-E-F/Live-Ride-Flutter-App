@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:geolocator/geolocator.dart';
 
 class RideScreen extends StatefulWidget {
   @override
@@ -44,14 +48,14 @@ class _RideScreenState extends State<RideScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(
+                SizedBox(
                   height: 60,
                 ),
                 Text(
                   "GPS",
                   style: theme.textTheme.headline6,
                 ),
-                const SizedBox(
+                SizedBox(
                   width: 5,
                 ),
                 Icon(
@@ -65,14 +69,14 @@ class _RideScreenState extends State<RideScreen>
             ),
             FittedBox(
                 child: Text(
-              "12.45",
-              style: TextStyle(
-                  fontSize: 120,
-                  fontFamily: 'Nunito',
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: -5,
-                  height: 1),
-            )),
+                  "12.45",
+                  style: TextStyle(
+                      fontSize: 120,
+                      fontFamily: 'Nunito',
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -5,
+                      height: 1),
+                )),
             Text(
               "km/h",
               style: theme.textTheme.headline6,
@@ -90,10 +94,10 @@ class _RideScreenState extends State<RideScreen>
                       children: [
                         Text("5.64",
                             style:
-                                theme.textTheme.headline4.copyWith(height: 1)),
+                            theme.textTheme.headline4.copyWith(height: 1)),
                         Text("kilometers",
                             style:
-                                theme.textTheme.headline5.copyWith(height: 1)),
+                            theme.textTheme.headline5.copyWith(height: 1)),
                       ],
                     ),
                   ),
@@ -102,10 +106,10 @@ class _RideScreenState extends State<RideScreen>
                       children: [
                         Text("0:23",
                             style:
-                                theme.textTheme.headline4.copyWith(height: 1)),
+                            theme.textTheme.headline4.copyWith(height: 1)),
                         Text("Duration",
                             style:
-                                theme.textTheme.headline5.copyWith(height: 1)),
+                            theme.textTheme.headline5.copyWith(height: 1)),
                       ],
                     ),
                   ),
@@ -114,10 +118,10 @@ class _RideScreenState extends State<RideScreen>
                       children: [
                         Text("14.7",
                             style:
-                                theme.textTheme.headline4.copyWith(height: 1)),
+                            theme.textTheme.headline4.copyWith(height: 1)),
                         Text("avg. speed",
                             style:
-                                theme.textTheme.headline5.copyWith(height: 1)),
+                            theme.textTheme.headline5.copyWith(height: 1)),
                       ],
                     ),
                   )
@@ -137,10 +141,10 @@ class _RideScreenState extends State<RideScreen>
                       children: [
                         Text("243",
                             style:
-                                theme.textTheme.headline4.copyWith(height: 1)),
+                            theme.textTheme.headline4.copyWith(height: 1)),
                         Text("calories",
                             style:
-                                theme.textTheme.headline5.copyWith(height: 1)),
+                            theme.textTheme.headline5.copyWith(height: 1)),
                       ],
                     ),
                   ),
@@ -149,10 +153,10 @@ class _RideScreenState extends State<RideScreen>
                       children: [
                         Text("231",
                             style:
-                                theme.textTheme.headline4.copyWith(height: 1)),
+                            theme.textTheme.headline4.copyWith(height: 1)),
                         Text("altitude",
                             style:
-                                theme.textTheme.headline5.copyWith(height: 1)),
+                            theme.textTheme.headline5.copyWith(height: 1)),
                       ],
                     ),
                   ),
@@ -161,10 +165,10 @@ class _RideScreenState extends State<RideScreen>
                       children: [
                         Text("42.3",
                             style:
-                                theme.textTheme.headline4.copyWith(height: 1)),
+                            theme.textTheme.headline4.copyWith(height: 1)),
                         Text("max speed",
                             style:
-                                theme.textTheme.headline5.copyWith(height: 1)),
+                            theme.textTheme.headline5.copyWith(height: 1)),
                       ],
                     ),
                   )
@@ -176,8 +180,8 @@ class _RideScreenState extends State<RideScreen>
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Container(
-                    padding: EdgeInsets.all(7),
-                    margin: EdgeInsets.only(bottom: 40),
+                    padding: const EdgeInsets.all(7),
+                    margin: const EdgeInsets.only(bottom: 40),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey.shade400),
                       shape: BoxShape.circle,
@@ -191,11 +195,11 @@ class _RideScreenState extends State<RideScreen>
                         color: Colors.grey.shade900,
                       ),
                       iconSize: 35,
-                      onPressed: () {},
+                      onPressed: (){},
                     )),
                 Container(
-                    padding: EdgeInsets.all(7),
-                    margin: EdgeInsets.only(bottom: 55),
+                    padding: const EdgeInsets.all(7),
+                    margin: const EdgeInsets.only(bottom: 55),
                     decoration: BoxDecoration(
                       color: theme.primaryColor,
                       shape: BoxShape.circle,
@@ -210,19 +214,11 @@ class _RideScreenState extends State<RideScreen>
                         color: Colors.white,
                       ),
                       iconSize: 50,
-                      onPressed: () {
-                        isStart = !isStart;
-                        ScaffoldMessengerState().showSnackBar(SnackBar(
-                            content: Text(
-                                isStart ? 'Trip Started' : 'Trip Stopped')));
-                        isStart
-                            ? _animationController.forward()
-                            : _animationController.reverse();
-                      },
+                      onPressed: _startStopTrip,
                     )),
                 Container(
-                    padding: EdgeInsets.all(7),
-                    margin: EdgeInsets.only(bottom: 40),
+                    padding: const EdgeInsets.all(7),
+                    margin: const EdgeInsets.only(bottom: 40),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey.shade400),
                       shape: BoxShape.circle,
@@ -236,7 +232,7 @@ class _RideScreenState extends State<RideScreen>
                         color: Colors.grey.shade900,
                       ),
                       iconSize: 35,
-                      onPressed: () {},
+                      onPressed: () => print(_determinePosition()),
                     )),
               ],
             )
@@ -245,4 +241,72 @@ class _RideScreenState extends State<RideScreen>
       ),
     );
   }
+
+  //------------------------| Start / Stop Trip |-----------------------------
+  void _startStopTrip() {
+    isStart = !isStart;
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      duration: const Duration(milliseconds: 800),
+      content: Text(
+        isStart ? 'Trip Started' : 'Trip Stopped',
+        style: TextStyle(
+            color: const Color(0xff3061D7),
+            fontWeight: FontWeight.w700,
+            fontFamily: 'Nunito'),
+        textAlign: TextAlign.center,
+      ),
+      backgroundColor: Colors.grey.shade200,
+    ));
+    isStart
+        ? _animationController.forward()
+        : _animationController.reverse();
+  }
+
+  //==========================================================================
+
+
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permantly denied, we cannot request permissions.');
+    }
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission != LocationPermission.whileInUse &&
+          permission != LocationPermission.always) {
+        return Future.error(
+            'Location permissions are denied (actual value: $permission).');
+      }
+    }
+
+    final position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    print(position.latitude);
+    print(position.longitude);
+    print(position.altitude);
+    print(position.speed);
+    print(position.accuracy);
+
+
+
+
+    positionStream.cancel();
+    return position;
+  }
+
+  StreamSubscription<Position> positionStream = Geolocator.getPositionStream(desiredAccuracy: LocationAccuracy.high).listen(
+          (Position position) {
+        print(position == null ? 'Unknown' : position.latitude.toString() + ', ' + position.longitude.toString() + ', ' + (position.speed*3.6).toString());
+      });
+
 }
