@@ -1,22 +1,28 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import './screens/ride_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(LiveRide());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class LiveRide extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primaryColor: Color(0xff3061D7),
+        fontFamily: 'Nunito',
+        primaryColor: const Color(0xff3061D7),
+        dividerColor: const Color(0xff3061D7),
+        textTheme: ThemeData.light().textTheme.copyWith(
+          headline4: TextStyle(color: const Color(0xff000000),fontSize: 32,fontWeight: FontWeight.w700),
+          headline5: TextStyle(color: const Color(0xff9e9e9e),fontSize: 18,fontWeight: FontWeight.w700),
+          headline6: TextStyle(color: Colors.black,fontSize: 22,fontWeight: FontWeight.w700),
+        )
       ),
-      home: Scaffold(
-        appBar: AppBar(title:Text("Siema")),
-
-      ),
+      home: RideScreen()
     );
   }
 }
