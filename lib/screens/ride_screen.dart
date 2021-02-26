@@ -13,11 +13,16 @@ class _RideScreenState extends State<RideScreen>
     with SingleTickerProviderStateMixin {
   AnimationController _animationController;
 
+  final locationStream = LocationHelper.getCurrentLocation();
+
   @override
   void initState() {
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 450));
     _checkPermissions();
+    locationStream.listen((Position event) {
+      print(event.speed * 3.6);
+    });
     super.initState();
   }
 
@@ -43,6 +48,7 @@ class _RideScreenState extends State<RideScreen>
         return SnackHelper.showContentSnack( 'Location permissions are denied (actual value: $permission).',context);
       }
     }
+    setState(() {});
   }
 
   var isStart = false;
@@ -51,7 +57,7 @@ class _RideScreenState extends State<RideScreen>
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return StreamBuilder<Position>(
-      stream: LocationHelper.getCurrentLocation(),
+      stream: locationStream,
       builder: (context, snapshot) => Scaffold(
         body: snapshot.hasData
             ? SafeArea(
@@ -97,7 +103,7 @@ class _RideScreenState extends State<RideScreen>
                     ),
                     FittedBox(
                         child: Text(
-                      snapshot.data.speed.toStringAsFixed(1),
+                      (snapshot.data.speed*3.6).toStringAsFixed(1),
                       style: TextStyle(
                           fontSize: 120,
                           fontFamily: 'Nunito',
@@ -277,19 +283,7 @@ class _RideScreenState extends State<RideScreen>
   //------------------------| Start / Stop Trip |-----------------------------
   void _startStopTrip() {
     isStart = !isStart;
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      duration: const Duration(milliseconds: 800),
-      content: Text(
-        isStart ? 'Trip Started' : 'Trip Stopped',
-        style: TextStyle(
-            color: const Color(0xff3061D7),
-            fontWeight: FontWeight.w700,
-            fontFamily: 'Nunito'),
-        textAlign: TextAlign.center,
-      ),
-      backgroundColor: Colors.grey.shade200,
-    ));
+    SnackHelper.showContentSnack(isStart ? "Trip started" : "Trip stopped",context);
     isStart ? _animationController.forward() : _animationController.reverse();
   }
 
