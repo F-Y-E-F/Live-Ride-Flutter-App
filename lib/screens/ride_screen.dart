@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:live_ride/helpers/snack_helper.dart';
+import 'package:live_ride/models/trip.dart';
 import '../helpers/location_helper.dart';
 
 class RideScreen extends StatefulWidget {
@@ -12,52 +13,71 @@ class RideScreen extends StatefulWidget {
 class _RideScreenState extends State<RideScreen>
     with SingleTickerProviderStateMixin {
   AnimationController _animationController;
+  final _locationStream = LocationHelper.getCurrentLocation();
 
-  final locationStream = LocationHelper.getCurrentLocation();
+  final Trip _trip = Trip(
+      startTime: DateTime.now(),
+      isStart: false,
+      altitude: 0.0,
+      averageSpeed: 0.0,
+      calories: 0,
+      distance: 0.0,
+      maxSpeed: 0.0,
+      nbOfAverageSpeeds: 0,
+      duration: 0);
 
   @override
   void initState() {
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 450));
     _checkPermissions();
-    locationStream.listen((Position event) {
-      print(event.speed * 3.6);
-    });
+    _listenLocationChanges();
     super.initState();
   }
 
+  void _listenLocationChanges() {
+    _locationStream.listen((Position event) {
+      if (_trip.isStart) {
+        //print(event.speed * 3.6);
+        print(_trip.duration);
+      }
+    });
+  }
 
-  Future<void> _checkPermissions() async{
+  Future<void> _checkPermissions() async {
     bool serviceEnabled;
     LocationPermission permission;
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      return SnackHelper.showContentSnack('You must enable location services !',context);
+      return SnackHelper.showContentSnack(
+          'You must enable location services !', context);
     }
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.deniedForever) {
-      return SnackHelper.showContentSnack('Location permissions are permantly denied, we cannot request permissions.',context);
+      return SnackHelper.showContentSnack(
+          'Location permissions are permantly denied, we cannot request permissions.',
+          context);
     }
 
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission != LocationPermission.whileInUse &&
           permission != LocationPermission.always) {
-        return SnackHelper.showContentSnack( 'Location permissions are denied (actual value: $permission).',context);
+        return SnackHelper.showContentSnack(
+            'Location permissions are denied (actual value: $permission).',
+            context);
       }
     }
     setState(() {});
   }
 
-  var isStart = false;
-
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return StreamBuilder<Position>(
-      stream: locationStream,
+      stream: _locationStream,
       builder: (context, snapshot) => Scaffold(
         body: snapshot.hasData
             ? SafeArea(
@@ -103,7 +123,9 @@ class _RideScreenState extends State<RideScreen>
                     ),
                     FittedBox(
                         child: Text(
-                      (snapshot.data.speed*3.6).toStringAsFixed(1),
+                      _trip.isStart
+                          ? (snapshot.data.speed * 3.6).toStringAsFixed(1)
+                          : "0.0",
                       style: TextStyle(
                           fontSize: 120,
                           fontFamily: 'Nunito',
@@ -126,7 +148,7 @@ class _RideScreenState extends State<RideScreen>
                           Expanded(
                             child: Column(
                               children: [
-                                Text("5.64",
+                                Text(_trip.distance.toStringAsFixed(1),
                                     style: theme.textTheme.headline4
                                         .copyWith(height: 1)),
                                 Text("kilometers",
@@ -266,7 +288,7 @@ class _RideScreenState extends State<RideScreen>
                                 color: Colors.grey.shade900,
                               ),
                               iconSize: 35,
-                              onPressed: (){},
+                              onPressed: () {},
                             )),
                       ],
                     )
@@ -282,12 +304,14 @@ class _RideScreenState extends State<RideScreen>
 
   //------------------------| Start / Stop Trip |-----------------------------
   void _startStopTrip() {
-    isStart = !isStart;
-    SnackHelper.showContentSnack(isStart ? "Trip started" : "Trip stopped",context);
-    isStart ? _animationController.forward() : _animationController.reverse();
+    _trip.isStart = !_trip.isStart;
+    SnackHelper.showContentSnack(
+        _trip.isStart ? "Trip started" : "Trip stopped", context);
+    _trip.isStart
+        ? _animationController.forward()
+        : _animationController.reverse();
   }
 
-  //==========================================================================
-
+//==========================================================================
 
 }
