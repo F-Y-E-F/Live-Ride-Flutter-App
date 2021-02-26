@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:geolocator/geolocator.dart';
+import './lat_lng.dart';
 
 class Trip {
   DateTime startTime;
@@ -10,7 +12,7 @@ class Trip {
   double distance;
   int calories;
   double altitude;
-  int nbOfAverageSpeeds;
+  List<LatLng> coordinatesList;
 
   Trip(
       {@required this.startTime,
@@ -21,12 +23,22 @@ class Trip {
       this.distance,
       this.calories,
       this.altitude,
-      this.nbOfAverageSpeeds,
+      this.coordinatesList,
       this.duration});
 
 
   String get refactoredDuration =>
      Duration(seconds: duration).toString().split('.')[0];
 
+
+  void addDistance(){
+    if (this.coordinatesList.length > 1) {
+      this.distance += Geolocator.distanceBetween(
+          this.coordinatesList[this.coordinatesList.length - 1].latitude,
+          this.coordinatesList[this.coordinatesList.length - 1].longitude,
+          this.coordinatesList[this.coordinatesList.length - 2].latitude,
+          this.coordinatesList[this.coordinatesList.length-2].longitude);
+    }
+  }
 
 }
