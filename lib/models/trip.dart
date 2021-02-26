@@ -25,6 +25,8 @@ class Trip {
       this.duration});
 
 
+  String get refactoredDuration =>
+     Duration(seconds: duration).toString().split('.')[0];
 
 
 }

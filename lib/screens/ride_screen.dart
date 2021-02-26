@@ -26,20 +26,32 @@ class _RideScreenState extends State<RideScreen>
       nbOfAverageSpeeds: 0,
       duration: 0);
 
+
+
   @override
   void initState() {
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 450));
     _checkPermissions();
     _listenLocationChanges();
+    _startDuration();
     super.initState();
+  }
+
+  void _startDuration() {
+    Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      if(_trip.isStart)
+        setState(() => _trip.duration+=1);
+      else
+        timer.cancel();
+    });
   }
 
   void _listenLocationChanges() {
     _locationStream.listen((Position event) {
       if (_trip.isStart) {
-        //print(event.speed * 3.6);
-        print(_trip.duration);
+        print(event.speed * 3.6);
+
       }
     });
   }
@@ -160,9 +172,11 @@ class _RideScreenState extends State<RideScreen>
                           Expanded(
                             child: Column(
                               children: [
-                                Text("0:23",
-                                    style: theme.textTheme.headline4
-                                        .copyWith(height: 1)),
+                                FittedBox(
+                                  child: Text(_trip.refactoredDuration.toString(),
+                                      style: theme.textTheme.headline4
+                                          .copyWith(height: 1)),
+                                ),
                                 Text("Duration",
                                     style: theme.textTheme.headline5
                                         .copyWith(height: 1)),
@@ -305,6 +319,7 @@ class _RideScreenState extends State<RideScreen>
   //------------------------| Start / Stop Trip |-----------------------------
   void _startStopTrip() {
     _trip.isStart = !_trip.isStart;
+    if(_trip.isStart) _startDuration();
     SnackHelper.showContentSnack(
         _trip.isStart ? "Trip started" : "Trip stopped", context);
     _trip.isStart
