@@ -41,4 +41,13 @@ class Trip {
     }
   }
 
+  void calculateAverageSpeed(double speed){
+      var totalSpeed = this.averageSpeed * (this.coordinatesList.length-1);
+      this.averageSpeed = (totalSpeed + speed) / this.coordinatesList.length;
+  }
+
+  void calculateCalories(){
+    this.calories = 60*(this.duration/60)*(0.6345*this.averageSpeed*this.averageSpeed+0.7563*this.averageSpeed+36.725)~/(3600); /// -> te 60 to masa ciała :]
+  }
+
 }
