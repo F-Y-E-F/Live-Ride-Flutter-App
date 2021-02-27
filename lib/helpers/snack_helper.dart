@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 class SnackHelper{
 
-  static void showContentSnack(String content,BuildContext context){
+  static void showContentSnack(String content,BuildContext context, [int duration]){
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      duration: const Duration(milliseconds: 800),
+      duration: Duration(milliseconds: duration ?? 800),
       content: Text(
         content,
         style: TextStyle(
