@@ -65,9 +65,9 @@ class Trip {
             polygonId: PolygonId('area'),
             points: this.coordinatesList,
             geodesic: true,
-            strokeColor: Colors.red,
+            strokeColor: new Color(0xff3061D7),
             strokeWidth: 5,
-            fillColor: Colors.red,
+            fillColor: new  Color(0xff3061D7),
             visible: true),
       ]);
   }

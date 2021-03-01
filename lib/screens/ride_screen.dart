@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -32,16 +33,19 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
 
   Timer _timer;
 
+  BitmapDescriptor _icon;
+
   @override
   void initState() {
+    _getIcon();
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 450));
 
     _endAnimationController =
         AnimationController(vsync: this, duration: const Duration(seconds: 1));
 
-    _offsetAnimationController =
-        AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
+    _offsetAnimationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 800));
 
     //------------------circular progress tap to end--------------------
     _endTripAnimation =
@@ -123,6 +127,14 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
     });
   }
 
+  Future<void> _getIcon() async {
+    var icon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 3.2), "assets/images/bike.png");
+    setState(() {
+      this._icon = icon;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -131,8 +143,8 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
       builder: (context, snapshot) => Scaffold(
         body: snapshot.hasData
             ? Stack(
-              children: [
-                SafeArea(
+                children: [
+                  SafeArea(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -200,7 +212,9 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
                               Expanded(
                                 child: Column(
                                   children: [
-                                    Text((_trip.distance / 1000).toStringAsFixed(2),
+                                    Text(
+                                        (_trip.distance / 1000)
+                                            .toStringAsFixed(2),
                                         style: theme.textTheme.headline4
                                             .copyWith(height: 1)),
                                     Text("kilometers",
@@ -297,15 +311,15 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Container(
-                                width: 68,
-                                height: 68,
-                                padding: const EdgeInsets.all(7),
-                                margin: const EdgeInsets.only(bottom: 35),
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey.shade400),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: IconButton(
+                              width: 68,
+                              height: 68,
+                              padding: const EdgeInsets.all(7),
+                              margin: const EdgeInsets.only(bottom: 35),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey.shade400),
+                                shape: BoxShape.circle,
+                              ),
+                              child: IconButton(
                                   tooltip: 'View Map',
                                   splashColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
@@ -314,8 +328,9 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
                                     color: Colors.grey.shade900,
                                   ),
                                   iconSize: 35,
-                                  onPressed: () => _offsetAnimationController.forward()),
-                                ),
+                                  onPressed: () =>
+                                      _offsetAnimationController.forward()),
+                            ),
                             Container(
                                 padding: const EdgeInsets.all(7),
                                 margin: const EdgeInsets.only(bottom: 55),
@@ -354,8 +369,8 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
                                       padding: const EdgeInsets.all(7),
                                       margin: const EdgeInsets.only(bottom: 35),
                                       decoration: BoxDecoration(
-                                        border:
-                                            Border.all(color: Colors.grey.shade400),
+                                        border: Border.all(
+                                            color: Colors.grey.shade400),
                                         shape: BoxShape.circle,
                                       ),
                                       child: IconButton(
@@ -367,14 +382,16 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
                                         disabledColor: Colors.grey[500],
                                         color: Colors.red,
                                         iconSize: 35,
-                                        onPressed: !_trip.isStart ? () {} : null,
+                                        onPressed:
+                                            !_trip.isStart ? () {} : null,
                                       )),
                                   SizedBox(
                                     height: 68,
                                     width: 68,
                                     child: CircularProgressIndicator(
                                       value: _endTripAnimation.value,
-                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.red),
                                     ),
                                   ),
                                 ],
@@ -385,67 +402,79 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SlideTransition(
-                    position: _offsetAnimation,
-                    child: Container(
-                      width: double.infinity,
-                      height: 350,
-                      child: Stack(
-                        children: [
-                          GoogleMap(
-                            markers: null,
-                            myLocationEnabled: true,
-                            initialCameraPosition: CameraPosition(
-                              target: LatLng(6.843369, 79.874814),
-                              zoom: 12.99,
-                            ),
-                            polygons: _trip.polylines,),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Container(
-                              margin: const EdgeInsets.all(20),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: theme.primaryColor
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SlideTransition(
+                      position: _offsetAnimation,
+                      child: Container(
+                        width: double.infinity,
+                        height: 350,
+                        child: Stack(
+                          children: [
+                            GoogleMap(
+                              markers: <Marker>{
+                                Marker(
+                                  markerId: MarkerId("current_position"),
+                                  position: LatLng(
+                                    snapshot.data.latitude,
+                                    snapshot.data.longitude,
+                                  ),
+                                  icon: _icon,
+                                  infoWindow: InfoWindow(
+                                      title: "Current Location",
+                                      snippet:
+                                          "Lat ${snapshot.data.latitude} - Lng ${snapshot.data.longitude}"),
+                                  draggable: true,
+                                ),
+                                Marker(
+                                  markerId: MarkerId("initial_position"),
+                                  position: LatLng(
+                                    _trip.coordinatesList.isNotEmpty ? _trip.coordinatesList[0].latitude ?? snapshot.data.latitude : snapshot.data.latitude,
+                                    _trip.coordinatesList.isNotEmpty ? _trip.coordinatesList[0].longitude ?? snapshot.data.longitude : snapshot.data.longitude,
+                                  ),
+                                  infoWindow: InfoWindow(
+                                      title: "Start Location",
+                                      snippet: "Your Init Location"),
+                                ),
+                              },
+                              initialCameraPosition: CameraPosition(
+                                target: LatLng(snapshot.data.latitude,
+                                    snapshot.data.longitude),
+                                zoom: 16.5,
                               ),
-                              child: IconButton(icon: Icon(Icons.arrow_downward_rounded,color: Colors.white,), onPressed: (){
-                                _offsetAnimationController.reverse();
-                              }),
+                              polygons: _trip.polylines,
                             ),
-                          ),
-                        ],
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Container(
+                                margin: const EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: theme.primaryColor),
+                                child: IconButton(
+                                    icon: Icon(
+                                      Icons.arrow_downward_rounded,
+                                      color: Colors.white,
+                                    ),
+                                    onPressed: () {
+                                      _offsetAnimationController.reverse();
+                                    }),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            )
+                ],
+              )
             : Center(
                 child: CircularProgressIndicator(),
               ),
       ),
     );
   }
-  List<LatLng> getPoints() {
-    return [
-      LatLng(6.862472, 79.859482),
-      LatLng(6.862258, 79.862325),
-      LatLng(6.863121, 79.863644),
-      LatLng(6.864538, 79.865039),
-      LatLng(6.865124, 79.864546),
-      LatLng(6.866451, 79.864667),
-      LatLng(6.867303, 79.86544),
-      LatLng(6.867899, 79.865826),
-      LatLng(6.867867, 79.866727),
-      LatLng(6.864884, 79.870333),
-      LatLng(6.861859, 79.873112),
-      LatLng(6.861593, 79.87499),
-      LatLng(6.860837, 79.876427),
 
-    ];
-  }
   @override
   void dispose() {
     _animationController.dispose();
