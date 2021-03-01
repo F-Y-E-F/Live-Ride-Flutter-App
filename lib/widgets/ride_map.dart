@@ -104,9 +104,4 @@ class _RideMapState extends State<RideMap> with SingleTickerProviderStateMixin {
   }
   //====================================================
 
-  @override
-  void dispose() {
-    widget.offsetAnimationController.dispose();
-    super.dispose();
-  }
 }

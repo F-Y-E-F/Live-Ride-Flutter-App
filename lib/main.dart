@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import './screens/add_trip_screen.dart';
 import './screens/ride_screen.dart';
 
 void main() {
@@ -22,7 +22,11 @@ class LiveRide extends StatelessWidget {
           headline6: TextStyle(color: Colors.black,fontSize: 22,fontWeight: FontWeight.w700,fontFamily: 'Nunito'),
         )
       ),
-      home: RideScreen()
+      initialRoute: AddTripScreen.routeName,
+      routes: {
+        AddTripScreen.routeName: (context) => AddTripScreen(),
+        RideScreen.routeName: (context) => RideScreen()
+      },
     );
   }
 }

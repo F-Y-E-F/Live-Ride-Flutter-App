@@ -8,6 +8,7 @@ import '../models/trip.dart';
 import '../helpers/location_helper.dart';
 
 class RideScreen extends StatefulWidget {
+  static const routeName = 'ride-screen';
   @override
   _RideScreenState createState() => _RideScreenState();
 }
