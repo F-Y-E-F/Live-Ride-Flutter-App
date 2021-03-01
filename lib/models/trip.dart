@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import './lat_lng.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Trip {
   DateTime startTime;
@@ -50,4 +53,22 @@ class Trip {
     this.calories = 60*(this.duration/60)*(0.6345*this.averageSpeed*this.averageSpeed+0.7563*this.averageSpeed+36.725)~/(3600); /// -> te 60 to masa ciała :]
   }
 
+  void calculateAverageAltitude(double altitude){
+    var totalAltitude = this.altitude * (this.coordinatesList.length-1);
+    this.altitude = (totalAltitude + altitude) / this.coordinatesList.length;
+  }
+
+  Set<Polygon> get polylines {
+    if(this.coordinatesList.isNotEmpty)
+      return Set<Polygon>.of(<Polygon>[
+        Polygon(
+            polygonId: PolygonId('area'),
+            points: this.coordinatesList,
+            geodesic: true,
+            strokeColor: Colors.red,
+            strokeWidth: 5,
+            fillColor: Colors.red,
+            visible: true),
+      ]);
+  }
 }
