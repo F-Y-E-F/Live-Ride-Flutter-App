@@ -70,5 +70,7 @@ class Trip {
             fillColor: new  Color(0xff3061D7),
             visible: true),
       ]);
+    else
+      return null;
   }
 }

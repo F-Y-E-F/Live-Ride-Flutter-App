@@ -96,11 +96,17 @@ class _RideMapState extends State<RideMap> with SingleTickerProviderStateMixin {
     );
   }
 
+  //------------| Get Icon from assets |-----------------
   Future<void> _getIcon() async {
     var icon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 3.2), "assets/images/bike.png");
-    setState(() {
-      this._icon = icon;
-    });
+    setState(() => this._icon = icon);
+  }
+  //====================================================
+
+  @override
+  void dispose() {
+    widget.offsetAnimationController.dispose();
+    super.dispose();
   }
 }

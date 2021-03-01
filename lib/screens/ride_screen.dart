@@ -419,6 +419,7 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
   void dispose() {
     _animationController.dispose();
     _endAnimationController.dispose();
+    _offsetAnimationController.dispose();
     super.dispose();
   }
 }
