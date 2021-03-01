@@ -410,7 +410,9 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
                 ],
               )
             : Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(theme.primaryColor),
+                ),
               ),
       ),
     );
