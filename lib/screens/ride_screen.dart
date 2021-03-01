@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:live_ride/widgets/ride_map.dart';
 import '../helpers/snack_helper.dart';
 import '../models/trip.dart';
 import '../helpers/location_helper.dart';
@@ -33,11 +33,8 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
 
   Timer _timer;
 
-  BitmapDescriptor _icon;
-
   @override
   void initState() {
-    _getIcon();
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 450));
 
@@ -124,14 +121,6 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
           _trip.calculateAverageAltitude(position.altitude);
         });
       }
-    });
-  }
-
-  Future<void> _getIcon() async {
-    var icon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 3.2), "assets/images/bike.png");
-    setState(() {
-      this._icon = icon;
     });
   }
 
@@ -402,70 +391,21 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: SlideTransition(
-                      position: _offsetAnimation,
-                      child: Container(
-                        width: double.infinity,
-                        height: 350,
-                        child: Stack(
-                          children: [
-                            GoogleMap(
-                              markers: <Marker>{
-                                Marker(
-                                  markerId: MarkerId("current_position"),
-                                  position: LatLng(
-                                    snapshot.data.latitude,
-                                    snapshot.data.longitude,
-                                  ),
-                                  icon: _icon,
-                                  infoWindow: InfoWindow(
-                                      title: "Current Location",
-                                      snippet:
-                                          "Lat ${snapshot.data.latitude} - Lng ${snapshot.data.longitude}"),
-                                  draggable: true,
-                                ),
-                                Marker(
-                                  markerId: MarkerId("initial_position"),
-                                  position: LatLng(
-                                    _trip.coordinatesList.isNotEmpty ? _trip.coordinatesList[0].latitude ?? snapshot.data.latitude : snapshot.data.latitude,
-                                    _trip.coordinatesList.isNotEmpty ? _trip.coordinatesList[0].longitude ?? snapshot.data.longitude : snapshot.data.longitude,
-                                  ),
-                                  infoWindow: InfoWindow(
-                                      title: "Start Location",
-                                      snippet: "Your Init Location"),
-                                ),
-                              },
-                              initialCameraPosition: CameraPosition(
-                                target: LatLng(snapshot.data.latitude,
-                                    snapshot.data.longitude),
-                                zoom: 16.5,
-                              ),
-                              polygons: _trip.polylines,
-                            ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: Container(
-                                margin: const EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: theme.primaryColor),
-                                child: IconButton(
-                                    icon: Icon(
-                                      Icons.arrow_downward_rounded,
-                                      color: Colors.white,
-                                    ),
-                                    onPressed: () {
-                                      _offsetAnimationController.reverse();
-                                    }),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  RideMap(
+                    latitude: snapshot.data.latitude,
+                    longitude: snapshot.data.longitude,
+                    startLatitude: _trip.coordinatesList.isNotEmpty
+                        ? _trip.coordinatesList[0].latitude ??
+                            snapshot.data.latitude
+                        : snapshot.data.latitude,
+                    startLongitude: _trip.coordinatesList.isNotEmpty
+                        ? _trip.coordinatesList[0].longitude ??
+                            snapshot.data.longitude
+                        : snapshot.data.longitude,
+                    offsetAnimation: _offsetAnimation,
+                    offsetAnimationController: _offsetAnimationController,
+                    polygon: _trip.polylines,
+                  )
                 ],
               )
             : Center(
