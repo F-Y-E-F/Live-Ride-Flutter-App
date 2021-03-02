@@ -4,7 +4,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import '../screens/ride_screen.dart';
 
 class AddTripScreen extends StatefulWidget {
-  static const routeName = "/";
+  static const routeName = "/add-trip-screen";
 
   @override
   _AddTripScreenState createState() => _AddTripScreenState();
@@ -100,7 +100,9 @@ class _AddTripScreenState extends State<AddTripScreen> {
                             content: SingleChildScrollView(
                               child: ColorPicker(
                                 pickerColor: _pickerColor,
-                                onColorChanged: _changeColor,
+                                onColorChanged: (Color color){
+                                  _pickerColor = color;
+                                },
                                 showLabel: true,
                                 pickerAreaHeightPercent: 0.8,
                               ),
@@ -195,5 +197,4 @@ class _AddTripScreenState extends State<AddTripScreen> {
     );
   }
 
-  void _changeColor(Color color) => setState(() => _pickerColor = color);
 }
