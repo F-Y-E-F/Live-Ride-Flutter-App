@@ -13,14 +13,20 @@ class TripsScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(30, 50, 30, 0),
+            padding: const EdgeInsets.fromLTRB(10, 50, 10, 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Here your trips",
-                    style: theme.textTheme.headline4.copyWith(fontSize: 28)),
-                Text("Easily Explore your trips",
-                    style: theme.textTheme.headline5.copyWith(fontSize: 20)),
+                Padding(
+                  padding: const EdgeInsets.only(left:15.0),
+                  child: Text("Here your trips",
+                      style: theme.textTheme.headline4.copyWith(fontSize: 28)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left:15.0),
+                  child: Text("Easily Explore your trips",
+                      style: theme.textTheme.headline5.copyWith(fontSize: 20)),
+                ),
                 SizedBox(height: 30,),
                 ListView.builder(
                   primary: false,
