@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:live_ride/screens/trips_screen.dart';
+import './screens/trips_screen.dart';
 import './screens/add_trip_screen.dart';
 import './screens/ride_screen.dart';
 
@@ -28,7 +28,7 @@ class LiveRide extends StatelessWidget {
       routes: {
         AddTripScreen.routeName: (context) => AddTripScreen(),
         RideScreen.routeName: (context) => RideScreen(),
-        TripsScreen.routeName:(context) => TripsScreen()
+        TripsScreen.routeName:(context) => TripsScreen(),
       },
     );
   }

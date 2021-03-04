@@ -30,7 +30,7 @@ class TripsScreen extends StatelessWidget {
                 SizedBox(height: 30,),
                 ListView.builder(
                   primary: false,
-                  itemBuilder: (context, index) => TripCard(),
+                  itemBuilder: (context, index) => TripCard(index),
                   itemCount: 20,
                   scrollDirection: Axis.vertical,
                   physics: NeverScrollableScrollPhysics(),
