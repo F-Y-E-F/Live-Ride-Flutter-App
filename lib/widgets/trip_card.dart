@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:live_ride/helpers/slide_route.dart';
+import 'package:live_ride/helpers/fade_route.dart';
 import 'package:live_ride/screens/trip_details_screen.dart';
 
 class TripCard extends StatelessWidget {
@@ -14,7 +14,7 @@ class TripCard extends StatelessWidget {
     final theme = Theme.of(context);
     return GestureDetector(
       onTap: () => Navigator.of(context)
-          .push(SlideRoute(builder: (context) => TripDetailsScreen(index))),
+          .push(FadeRoute(builder: (context) => TripDetailsScreen(index))),
       child: Card(
         elevation: 0.8,
         child: Row(
@@ -28,7 +28,7 @@ class TripCard extends StatelessWidget {
                   child: Hero(
                     tag: 'map$index',
                     child: Image.network(
-                      'https://simlock24.pl/foto/09_27_20_Apple_Maps.png',
+                      'https://i.imgur.com/BDxieQD.png',
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,

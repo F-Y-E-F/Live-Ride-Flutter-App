@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SlideRoute<T> extends MaterialPageRoute<T> {
-  SlideRoute({WidgetBuilder builder, RouteSettings settings})
+class FadeRoute<T> extends MaterialPageRoute<T> {
+  FadeRoute({WidgetBuilder builder, RouteSettings settings})
       : super(builder: builder, settings: settings);
 
   @override
