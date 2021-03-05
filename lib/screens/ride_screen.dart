@@ -21,6 +21,7 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
   Animation<Offset> _offsetAnimation;
   final _locationStream = LocationHelper.getCurrentLocation();
 
+  StreamSubscription<Position> _locationStreamSubscription;
   final Trip _trip = Trip(
       startTime: DateTime.now(),
       isStart: false,
@@ -109,7 +110,7 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
   //=================================================================
 
   void _listenLocationChanges() {
-    _locationStream.listen((Position position) {
+    _locationStreamSubscription = _locationStream.listen((Position position) {
       if (_trip.isStart) {
         setState(() {
           _trip.coordinatesList
@@ -423,6 +424,8 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
     _animationController.dispose();
     _endAnimationController.dispose();
     _offsetAnimationController.dispose();
+    _locationStreamSubscription.cancel();
+    _timer.cancel();
     super.dispose();
   }
 }

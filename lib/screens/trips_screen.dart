@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../helpers/slide_route.dart';
 import '../widgets/trip_card.dart';
 import '../screens/add_trip_screen.dart';
 
@@ -48,7 +48,7 @@ class TripsScreen extends StatelessWidget {
         splashColor: const Color(0xff020063),
         child: Icon(Icons.add_rounded),
         onPressed: () =>
-            Navigator.of(context).pushNamed(AddTripScreen.routeName),
+            Navigator.of(context).push(SlideRoute(builder: (context) => AddTripScreen()))
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

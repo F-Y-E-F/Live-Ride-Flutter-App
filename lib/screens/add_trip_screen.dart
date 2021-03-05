@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:live_ride/helpers/slide_route.dart';
 import '../screens/ride_screen.dart';
 
 class AddTripScreen extends StatefulWidget {
@@ -185,7 +186,7 @@ class _AddTripScreenState extends State<AddTripScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
           ),
           onPressed: () =>
-              Navigator.of(context).pushNamed(RideScreen.routeName),
+              Navigator.of(context).pushAndRemoveUntil(SlideRoute(builder: (context) => RideScreen()),(r)=>false),
           label: Text(
             "GO",
             style: theme.textTheme.headline4
