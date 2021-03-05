@@ -1,8 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:live_ride/providers/trips_provider.dart';
+import 'package:provider/provider.dart';
 import '../widgets/ride_map.dart';
 import '../helpers/snack_helper.dart';
 import '../models/trip.dart';
@@ -68,9 +69,10 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
           ..addStatusListener((status) {
             if (status == AnimationStatus.completed) {
               SnackHelper.showContentSnack("FINISHED", context);
-
-              /// Tu będzie koniec tripu
               _trip.endTime = DateTime.now();
+              /// Tu będzie koniec tripu
+              Provider.of<TripsProvider>(context,listen: false).insertTrip(_trip).then((_) => Navigator.of(context).pushNamed('/'));
+
             }
           });
 

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -80,5 +82,39 @@ class Trip {
       ]);
     else
       return null;
+  }
+
+
+  Map<String,dynamic> toMap(){
+    return {
+      'id': id,
+      'name': name,
+      'color': color,
+      'startTime': startTime.toString(),
+      'endTime': endTime.toString(),
+      'maxSpeed': maxSpeed,
+      'duration': duration,
+      'averageSpeed': averageSpeed,
+      'distance' : distance,
+      'calories': calories,
+      'altitude': altitude,
+      'coordinatesList': json.encode(coordinatesList)
+    };
+  }
+
+
+  static Trip fromMap(Map<String,dynamic> map){
+    return Trip(
+        startTime: DateTime.now(),
+        isStart: false,
+        altitude: 0.0,
+        averageSpeed: 0.0,
+        calories: 0,
+        distance: 0.0,
+        maxSpeed: 0.0,
+        coordinatesList: [],
+        duration: 0,
+        color: '0xffff0000',
+        name: 'Nice trip');
   }
 }
