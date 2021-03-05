@@ -27,7 +27,6 @@ class LiveRide extends StatelessWidget {
       initialRoute: TripsScreen.routeName,
       routes: {
         AddTripScreen.routeName: (context) => AddTripScreen(),
-        RideScreen.routeName: (context) => RideScreen(),
         TripsScreen.routeName:(context) => TripsScreen(),
       },
     );

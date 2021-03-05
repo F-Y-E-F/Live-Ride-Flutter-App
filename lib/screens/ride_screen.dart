@@ -1,14 +1,20 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:live_ride/widgets/ride_map.dart';
+import '../widgets/ride_map.dart';
 import '../helpers/snack_helper.dart';
 import '../models/trip.dart';
 import '../helpers/location_helper.dart';
 
 class RideScreen extends StatefulWidget {
   static const routeName = 'ride-screen';
+  final String color;
+  final String name;
+
+  RideScreen(this.color, this.name);
+
   @override
   _RideScreenState createState() => _RideScreenState();
 }
@@ -31,12 +37,19 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
       distance: 0.0,
       maxSpeed: 0.0,
       coordinatesList: [],
-      duration: 0);
+      duration: 0,
+      color: '0xffff0000',
+      name: 'Nice trip');
 
   Timer _timer;
 
   @override
   void initState() {
+    _trip.name = widget.name  == "" ?"Nice trip": widget.name;
+    _trip.color = widget.color;
+
+    print(_trip.color);
+    print(_trip.name);
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 450));
 
@@ -141,7 +154,7 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
                       children: [
                         Container(
                             child: Text(
-                              "Your Trip",
+                              _trip.name,
                               style: theme.textTheme.headline4.copyWith(
                                   color: Colors.grey.shade900, fontSize: 28),
                               textAlign: TextAlign.center,
@@ -151,6 +164,7 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 70.0),
                           child: Divider(
+                            color: Color(int.parse(_trip.color)),
                             thickness: 3,
                           ),
                         ),

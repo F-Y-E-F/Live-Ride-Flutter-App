@@ -12,6 +12,7 @@ class AddTripScreen extends StatefulWidget {
 }
 
 class _AddTripScreenState extends State<AddTripScreen> {
+  final _controller = TextEditingController();
   Color _pickerColor =
       Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
   Color _currentColor =
@@ -62,6 +63,7 @@ class _AddTripScreenState extends State<AddTripScreen> {
                 ),
               ),
               TextField(
+                controller: _controller,
                 decoration: InputDecoration(
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 25, vertical: 20),
@@ -186,7 +188,7 @@ class _AddTripScreenState extends State<AddTripScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
           ),
           onPressed: () =>
-              Navigator.of(context).pushAndRemoveUntil(SlideRoute(builder: (context) => RideScreen()),(r)=>false),
+              Navigator.of(context).pushAndRemoveUntil(SlideRoute(builder: (context) => RideScreen(_currentColor.value.toString(),_controller.text )),(r)=>false),
           label: Text(
             "GO",
             style: theme.textTheme.headline4
