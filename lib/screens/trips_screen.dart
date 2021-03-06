@@ -49,7 +49,7 @@ class TripsScreen extends StatelessWidget {
                                   : ListView.builder(
                                       primary: false,
                                       itemBuilder: (context, index) =>
-                                          TripCard(index),
+                                          TripCard(trips.trips[index].id,index),
                                       itemCount: trips.trips.length,
                                       scrollDirection: Axis.vertical,
                                       physics: NeverScrollableScrollPhysics(),

@@ -40,17 +40,16 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
       coordinatesList: [],
       duration: 0,
       color: '0xffff0000',
-      name: 'Nice trip');
+      name: 'Nice trip',
+      id: null);
 
   Timer _timer;
 
   @override
   void initState() {
-    _trip.name = widget.name  == "" ?"Nice trip": widget.name;
+    _trip.name = widget.name == "" ? "Nice trip" : widget.name;
     _trip.color = widget.color;
 
-    print(_trip.color);
-    print(_trip.name);
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 450));
 
@@ -70,9 +69,11 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
             if (status == AnimationStatus.completed) {
               SnackHelper.showContentSnack("FINISHED", context);
               _trip.endTime = DateTime.now();
-              /// Tu będzie koniec tripu
-              Provider.of<TripsProvider>(context,listen: false).insertTrip(_trip).then((_) => Navigator.of(context).pushNamed('/'));
 
+              /// Tu będzie koniec tripu
+              Provider.of<TripsProvider>(context, listen: false)
+                  .insertTrip(_trip)
+                  .then((_) => Navigator.of(context).pushNamed('/'));
             }
           });
 
@@ -441,7 +442,7 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
     _endAnimationController.dispose();
     _offsetAnimationController.dispose();
     _locationStreamSubscription.cancel();
-    _timer.cancel();
+    if(_timer != null) _timer.cancel();
     super.dispose();
   }
 }

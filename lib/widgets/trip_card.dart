@@ -1,17 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:live_ride/helpers/fade_route.dart';
-import 'package:live_ride/screens/trip_details_screen.dart';
+import 'package:intl/intl.dart';
+import '../helpers/fade_route.dart';
+import '../models/trip.dart';
+import '../providers/trips_provider.dart';
+import '../screens/trip_details_screen.dart';
+import 'package:provider/provider.dart';
 
 class TripCard extends StatelessWidget {
   final int index;
+  final int id;
 
-  TripCard(this.index);
+  TripCard(this.id,this.index);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final Trip trip = Provider.of<TripsProvider>(context,listen: false).getTripById(id);
     return GestureDetector(
       onTap: () => Navigator.of(context)
           .push(FadeRoute(builder: (context) => TripDetailsScreen(index))),
@@ -45,7 +50,7 @@ class TripCard extends StatelessWidget {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.green),
+                            shape: BoxShape.circle, color: Color(int.parse(trip.color))),
                         width: 12,
                         height: 12,
                       ),
@@ -53,7 +58,7 @@ class TripCard extends StatelessWidget {
                         width: 8,
                       ),
                       Text(
-                        "Jazda rekreacyjna",
+                        trip.name,
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w700,
@@ -80,7 +85,7 @@ class TripCard extends StatelessWidget {
                                   width: 5,
                                 ),
                                 Text(
-                                  "23km",
+                                  "${(trip.distance/1000).toStringAsFixed(1)}km",
                                   style: theme.textTheme.headline3,
                                 )
                               ],
@@ -95,7 +100,7 @@ class TripCard extends StatelessWidget {
                                   width: 5,
                                 ),
                                 Text(
-                                  "01:23:00",
+                                  trip.refactoredDuration,
                                   style: theme.textTheme.headline3,
                                 )
                               ],
@@ -110,7 +115,7 @@ class TripCard extends StatelessWidget {
                                   width: 5,
                                 ),
                                 Text(
-                                  "432 kcal",
+                                  "${trip.calories}kcal",
                                   style: theme.textTheme.headline3,
                                 )
                               ],
@@ -129,12 +134,12 @@ class TripCard extends StatelessWidget {
                             padding: const EdgeInsets.all(2),
                             child: Row(
                               children: [
-                                Icon(Icons.height_rounded, size: 23),
+                                Icon(Icons.speed, size: 23),
                                 SizedBox(
                                   width: 5,
                                 ),
                                 Text(
-                                  "242 m",
+                                  "${trip.averageSpeed.toStringAsFixed(1)}km/h",
                                   style: theme.textTheme.headline3,
                                 )
                               ],
@@ -152,7 +157,7 @@ class TripCard extends StatelessWidget {
                                   width: 5,
                                 ),
                                 Text(
-                                  "12:32",
+                                  DateFormat(DateFormat.HOUR24_MINUTE).format(trip.startTime),
                                   style: theme.textTheme.headline3,
                                 )
                               ],
@@ -167,7 +172,7 @@ class TripCard extends StatelessWidget {
                                   width: 5,
                                 ),
                                 Text(
-                                  "14:12",
+                                  DateFormat(DateFormat.HOUR24_MINUTE).format(trip.endTime),
                                   style: theme.textTheme.headline3,
                                 )
                               ],

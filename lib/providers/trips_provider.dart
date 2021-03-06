@@ -19,5 +19,9 @@ class TripsProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Trip getTripById(int id){
+    return _trips.firstWhere((trip) => trip.id == id);
+  }
+
 
 }

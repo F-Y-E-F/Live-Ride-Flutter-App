@@ -32,7 +32,8 @@ class Trip {
       this.coordinatesList,
       this.duration,
       @required this.name,
-      @required this.color});
+      @required this.color,
+      this.id});
 
   String get refactoredDuration =>
       Duration(seconds: duration).toString().split('.')[0];
@@ -84,8 +85,7 @@ class Trip {
       return null;
   }
 
-
-  Map<String,dynamic> toMap(){
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
       'name': name,
@@ -95,26 +95,36 @@ class Trip {
       'maxSpeed': maxSpeed,
       'duration': duration,
       'averageSpeed': averageSpeed,
-      'distance' : distance,
+      'distance': distance,
       'calories': calories,
       'altitude': altitude,
       'coordinatesList': json.encode(coordinatesList)
     };
   }
 
-
-  static Trip fromMap(Map<String,dynamic> map){
+  static Trip fromMap(Map<String, dynamic> map) {
     return Trip(
-        startTime: DateTime.now(),
+        startTime: DateTime.parse(map['startTime']),
+        endTime: DateTime.parse(map['endTime']),
         isStart: false,
-        altitude: 0.0,
-        averageSpeed: 0.0,
-        calories: 0,
-        distance: 0.0,
-        maxSpeed: 0.0,
-        coordinatesList: [],
-        duration: 0,
-        color: '0xffff0000',
-        name: 'Nice trip');
+        altitude: map['altitude'],
+        averageSpeed: map['averageSpeed'],
+        calories: map['calories'],
+        distance: map['distance'],
+        maxSpeed: map['maxSpeed'],
+        coordinatesList: _getCoordinatesList(map),
+        duration: map['duration'],
+        color: map['color'],
+        name: map['name'],
+        id: map['id']);
+  }
+
+  static List<LatLng> _getCoordinatesList(Map<String, dynamic> map){
+    List<dynamic> listOfCoordinates = (jsonDecode(map['coordinatesList']) as List<dynamic>);
+    if(listOfCoordinates.length<=0){
+      return [];
+    }else{
+      return listOfCoordinates.map((e) => LatLng(e[0],e[1])).toList();
+    }
   }
 }
