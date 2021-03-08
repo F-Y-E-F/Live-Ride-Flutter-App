@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -77,19 +78,21 @@ class Trip {
     this.altitude = (totalAltitude + altitude) / this.coordinatesList.length;
   }
 
-  Set<Polygon> get polylines {
-    if (this.coordinatesList.isNotEmpty)
-      return Set<Polygon>.of(<Polygon>[
-        Polygon(
-            polygonId: PolygonId('area'),
-            points: this.coordinatesList,
-            geodesic: true,
-            strokeColor: new Color(0xff3061D7),
-            strokeWidth: 5,
-            fillColor: new Color(0xff3061D7),
-            visible: true),
-      ]);
-    else
+  Set<Polyline> get polylines {
+    Set<Polyline> set = {};
+    if (this.coordinatesList.isNotEmpty) {
+      for (int i = 1; i < coordinatesList.length; i++) {
+        set.add(Polyline(
+            polylineId: PolylineId(Random().nextInt(10000).toString()),
+            color: const Color(0xff3061D7),
+            points: [
+              coordinatesList[i],
+              coordinatesList[i - 1],
+            ],
+            width: 3));
+      }
+      return set;
+    } else
       return null;
   }
 

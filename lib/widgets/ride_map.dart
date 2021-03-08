@@ -6,10 +6,10 @@ class RideMap extends StatefulWidget {
   final double latitude,longitude, startLatitude, startLongitude;
   final Animation<Offset> offsetAnimation;
   final AnimationController offsetAnimationController;
-  final Set<Polygon> polygon;
+  final Set<Polyline> polylines;
 
   RideMap(
-      {this.latitude, this.longitude, this.startLatitude, this.startLongitude, this.offsetAnimation, this.offsetAnimationController,this.polygon});
+      {this.latitude, this.longitude, this.startLatitude, this.startLongitude, this.offsetAnimation, this.offsetAnimationController,this.polylines});
   @override
   _RideMapState createState() => _RideMapState();
 }
@@ -70,7 +70,7 @@ class _RideMapState extends State<RideMap> with SingleTickerProviderStateMixin {
                       widget.longitude),
                   zoom: 16.5,
                 ),
-                polygons: widget.polygon,
+                polylines: widget.polylines,
               ),
               Align(
                 alignment: Alignment.topRight,

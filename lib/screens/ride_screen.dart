@@ -423,7 +423,7 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
                         : snapshot.data.longitude,
                     offsetAnimation: _offsetAnimation,
                     offsetAnimationController: _offsetAnimationController,
-                    polygon: _trip.polylines,
+                    polylines: _trip.polylines,
                   )
                 ],
               )

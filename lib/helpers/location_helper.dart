@@ -44,8 +44,6 @@ class LocationHelper {
     path = path.substring(0, path.length - 1);
     double centerLt = (coordinatesList[0].latitude + coordinatesList[coordinatesList.length - 1].latitude) / 2;
     double centerLng = (coordinatesList[0].longitude + coordinatesList[coordinatesList.length - 1].longitude) / 2;
-    print(coordinatesList[0].latitude);
-    print(coordinatesList[0].longitude);
     return 'https://maps.googleapis.com/maps/api/staticmap?center=$centerLt,$centerLng&zoom=14&size=900x700&maptype=roadmap&markers=color:green%7Clabel:S%7C${coordinatesList[0].latitude},${coordinatesList[0].longitude}&markers=color:red%7Clabel:E%7C${coordinatesList[coordinatesList.length-1].latitude},${coordinatesList[coordinatesList.length-1].longitude}&$path&sensor=false&key=$GOOGLE_MAP_API';
   }
 
