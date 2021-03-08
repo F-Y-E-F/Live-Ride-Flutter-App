@@ -79,19 +79,14 @@ class Trip {
   }
 
   Set<Polyline> get polylines {
-    Set<Polyline> set = {};
     if (this.coordinatesList.isNotEmpty) {
-      for (int i = 1; i < coordinatesList.length; i++) {
-        set.add(Polyline(
+      return {
+        Polyline(
             polylineId: PolylineId(Random().nextInt(10000).toString()),
             color: const Color(0xff3061D7),
-            points: [
-              coordinatesList[i],
-              coordinatesList[i - 1],
-            ],
-            width: 3));
-      }
-      return set;
+            points: this.coordinatesList,
+            width: 3)
+      };
     } else
       return null;
   }
