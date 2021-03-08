@@ -1,9 +1,10 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../helpers/snack_helper.dart';
 import 'package:flutter/material.dart';
 
 class LocationHelper {
-  static const GOOGLE_MAP_API = 'AIzaSyAItiMAoZ9HKXS-nhWbCo9oYgLaFKCFmB8';
+  static const GOOGLE_MAP_API = 'AIzaSyDCOQm4ya-yQ-CZSey5VY_3QE5i3irHaiQ';
 
   static Stream<Position> getCurrentLocation() {
     return Geolocator.getPositionStream();
@@ -37,7 +38,16 @@ class LocationHelper {
     }
   }
 
-  static String getTripImage() {
-    return 'https://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=13&size=600x300&maptype=roadmap &markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318 &markers=color:red%7Clabel:C%7C40.718217,-73.998284&key=$GOOGLE_MAP_API';
+  static String getTripImage(List<LatLng> coordinatesList) {
+    String path = "path=";
+    coordinatesList.forEach((element) => path = path + element.latitude.toString()+","+element.longitude.toString()+"|");
+    path = path.substring(0, path.length - 1);
+    double centerLt = (coordinatesList[0].latitude + coordinatesList[coordinatesList.length - 1].latitude) / 2;
+    double centerLng = (coordinatesList[0].longitude + coordinatesList[coordinatesList.length - 1].longitude) / 2;
+    print(coordinatesList[0].latitude);
+    print(coordinatesList[0].longitude);
+    return 'https://maps.googleapis.com/maps/api/staticmap?center=$centerLt,$centerLng&zoom=14&size=900x700&maptype=roadmap&markers=color:green%7Clabel:S%7C${coordinatesList[0].latitude},${coordinatesList[0].longitude}&markers=color:red%7Clabel:E%7C${coordinatesList[coordinatesList.length-1].latitude},${coordinatesList[coordinatesList.length-1].longitude}&$path&sensor=false&key=$GOOGLE_MAP_API';
   }
+
+
 }

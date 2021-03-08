@@ -8,7 +8,7 @@
         android:label="live_ride"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAItiMAoZ9HKXS-nhWbCo9oYgLaFKCFmB8"/>
+            android:value="AIzaSyDCOQm4ya-yQ-CZSey5VY_3QE5i3irHaiQ"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

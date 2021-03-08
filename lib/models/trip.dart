@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:live_ride/helpers/location_helper.dart';
 
 class Trip {
   int id;
@@ -37,6 +38,13 @@ class Trip {
 
   String get refactoredDuration =>
       Duration(seconds: duration).toString().split('.')[0];
+
+  String get mapStaticView {
+    if (coordinatesList.length > 0)
+      return LocationHelper.getTripImage(coordinatesList);
+    else
+      return 'https://i.imgur.com/OZyMbHc.png';
+  }
 
   void addDistance() {
     if (this.coordinatesList.length > 1) {
@@ -119,12 +127,13 @@ class Trip {
         id: map['id']);
   }
 
-  static List<LatLng> _getCoordinatesList(Map<String, dynamic> map){
-    List<dynamic> listOfCoordinates = (jsonDecode(map['coordinatesList']) as List<dynamic>);
-    if(listOfCoordinates.length<=0){
+  static List<LatLng> _getCoordinatesList(Map<String, dynamic> map) {
+    List<dynamic> listOfCoordinates =
+        (jsonDecode(map['coordinatesList']) as List<dynamic>);
+    if (listOfCoordinates.length <= 0) {
       return [];
-    }else{
-      return listOfCoordinates.map((e) => LatLng(e[0],e[1])).toList();
+    } else {
+      return listOfCoordinates.map((e) => LatLng(e[0], e[1])).toList();
     }
   }
 }

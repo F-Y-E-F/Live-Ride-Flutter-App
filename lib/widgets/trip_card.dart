@@ -18,8 +18,9 @@ class TripCard extends StatelessWidget {
     final theme = Theme.of(context);
     final Trip trip = Provider.of<TripsProvider>(context,listen: false).getTripById(id);
     return GestureDetector(
+      onLongPress: ()=>print(trip.coordinatesList.toString()),
       onTap: () => Navigator.of(context)
-          .push(FadeRoute(builder: (context) => TripDetailsScreen(index))),
+          .push(FadeRoute(builder: (context) => TripDetailsScreen(id,index))),
       child: Card(
         elevation: 0.8,
         child: Row(
@@ -33,7 +34,7 @@ class TripCard extends StatelessWidget {
                   child: Hero(
                     tag: 'map$index',
                     child: Image.network(
-                      'https://i.imgur.com/BDxieQD.png',
+                      trip.mapStaticView,
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
