@@ -1,7 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class TripChart extends StatefulWidget {
   @override
@@ -110,7 +108,6 @@ class _TripChartState extends State<TripChart> {
               fontSize: 14),
           margin: 20,
           getTitles: (double value) {
-            print(value);
             switch (value.toInt()) {
               case 0:
                 return '1km';

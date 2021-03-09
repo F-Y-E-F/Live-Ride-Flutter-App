@@ -41,9 +41,13 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
       duration: 0,
       color: '0xffff0000',
       name: 'Nice trip',
-      id: null);
+      id: null,
+      intervalSpeeds: []);
+
 
   Timer _timer;
+
+  List<double> _intervalSpeeds = [];
 
   @override
   void initState() {
@@ -120,6 +124,16 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
   void _startDuration() {
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       setState(() => _trip.duration += 1);
+      if(_trip.duration % 60 == 0){
+        double speed = 0;
+        _intervalSpeeds.forEach((element) => speed+=element);
+        print(_intervalSpeeds.toString());
+        print(speed.toString());
+        print((speed/_intervalSpeeds.length).toString());
+        _trip.intervalSpeeds.add(speed/_intervalSpeeds.length);
+        _intervalSpeeds.clear();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("XDDD")));
+      }
     });
   }
 
@@ -137,6 +151,7 @@ class _RideScreenState extends State<RideScreen> with TickerProviderStateMixin {
           _trip.calculateAverageSpeed(position.speed * 3.6);
           _trip.calculateCalories();
           _trip.calculateAverageAltitude(position.altitude);
+          _intervalSpeeds.add(position.speed * 3.6);
         });
       }
     });

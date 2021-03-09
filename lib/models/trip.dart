@@ -21,6 +21,7 @@ class Trip {
   int calories;
   double altitude;
   List<LatLng> coordinatesList;
+  List<double> intervalSpeeds;
 
   Trip(
       {@required this.startTime,
@@ -33,6 +34,7 @@ class Trip {
       this.altitude,
       this.coordinatesList,
       this.duration,
+      this.intervalSpeeds,
       @required this.name,
       @required this.color,
       this.id});
@@ -104,7 +106,8 @@ class Trip {
       'distance': distance,
       'calories': calories,
       'altitude': altitude,
-      'coordinatesList': json.encode(coordinatesList)
+      'coordinatesList': json.encode(coordinatesList),
+      'intervalSpeeds' : json.encode(intervalSpeeds)
     };
   }
 
@@ -122,7 +125,8 @@ class Trip {
         duration: map['duration'],
         color: map['color'],
         name: map['name'],
-        id: map['id']);
+        id: map['id'],
+        intervalSpeeds: _getIntervalSpeedsList(map));
   }
 
   static List<LatLng> _getCoordinatesList(Map<String, dynamic> map) {
@@ -132,6 +136,15 @@ class Trip {
       return [];
     } else {
       return listOfCoordinates.map((e) => LatLng(e[0], e[1])).toList();
+    }
+  }
+
+  static List<double> _getIntervalSpeedsList(Map<String, dynamic> map) {
+    List<dynamic> listOfSpeeds = (jsonDecode(map['intervalSpeeds']) as List<dynamic>);
+    if (listOfSpeeds.length <= 0) {
+      return [];
+    } else {
+      return [...listOfSpeeds];
     }
   }
 }

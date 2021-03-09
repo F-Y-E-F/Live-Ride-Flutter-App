@@ -10,7 +10,6 @@ class TripsProvider with ChangeNotifier {
 
   Future<void> insertTrip(Trip trip) async{
       await DBHelper.insertTrip('trips', trip.toMap());
-      print("XD");
   }
 
   Future<void> getAllTrips() async{
