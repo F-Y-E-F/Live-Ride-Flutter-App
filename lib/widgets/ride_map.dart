@@ -52,7 +52,6 @@ class _RideMapState extends State<RideMap> with SingleTickerProviderStateMixin {
                         title: "Current Location",
                         snippet:
                         "Lat ${widget.latitude} - Lng ${widget.longitude}"),
-                    draggable: true,
                   ),
                   Marker(
                     markerId: MarkerId("initial_position"),

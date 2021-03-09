@@ -41,7 +41,7 @@ class Trip {
       Duration(seconds: duration).toString().split('.')[0];
 
   String get mapStaticView {
-    if (coordinatesList.length > 0)
+    if (coordinatesList.length < 0)
       return LocationHelper.getTripImage(coordinatesList);
     else
       return 'https://i.imgur.com/OZyMbHc.png';
