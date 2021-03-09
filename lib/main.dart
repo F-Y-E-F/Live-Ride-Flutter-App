@@ -3,7 +3,6 @@ import 'package:live_ride/providers/trips_provider.dart';
 import 'package:provider/provider.dart';
 import './screens/trips_screen.dart';
 import './screens/add_trip_screen.dart';
-import './screens/ride_screen.dart';
 
 void main() {
   runApp(LiveRide());
