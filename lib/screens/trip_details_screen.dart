@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:live_ride/screens/map_screen.dart';
+import '../screens/map_screen.dart';
+import '../widgets/trip_chart.dart';
 import '../models/trip.dart';
 import '../providers/trips_provider.dart';
 import 'package:provider/provider.dart';
@@ -113,6 +113,10 @@ class TripDetailsScreen extends StatelessWidget {
                     backgroundColor: theme.primaryColor,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(100)))),
+            SizedBox(
+              height: 24,
+            ),
+            TripChart(),
             SizedBox(
               height: 20,
             ),
