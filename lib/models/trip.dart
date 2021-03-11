@@ -94,6 +94,8 @@ class Trip {
   }
 
   Map<String, dynamic> toMap() {
+    print(intervalSpeeds);
+    intervalSpeeds.removeWhere((element) => element.isNaN);
     return {
       'id': id,
       'name': name,

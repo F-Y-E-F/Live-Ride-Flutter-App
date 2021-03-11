@@ -116,7 +116,7 @@ class TripDetailsScreen extends StatelessWidget {
             SizedBox(
               height: 24,
             ),
-            TripChart(),
+            if(trip.intervalSpeeds.isNotEmpty) TripChart(trip.intervalSpeeds),
             SizedBox(
               height: 20,
             ),
